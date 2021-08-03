@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+  <head>
+    <meta charset="utf-8">
+    <title>Todoapp</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+    <style media="screen">
+      div{
+        margin-left: Auto;
+        margin-right: Auto;
+        width: 500px;
+      }
+
+      input[type=button]{
+        float:right;
+      }
+      .button{
+        padding: 0;
+        border: none;
+        background: none;
+      }
+
+    </style>
+  </head>
+  <body>
+    <div class="addtodos">
+      <form method = "post" action = "/todos/create" id = "form">
+          <div class="mb-3">
+            <label for="exampleInputEmail1" class="form-label">New Todo: </label>
+            <input type="text" class="form-control" id="inputtodo">
+            <div id="emailHelp" class="form-text">Enter new todo item and then press submit.</div>
+            <div class="hidden" id = 'error'>Something went wrong!</div>
+          </div>
+          <button type="submit" class="btn btn-primary">Submit</button>
+      </form>
+
+      <ul class="list-group" id = 'todos'>
+        {% for d in data %}
+        <li class="list-group-item">
+          <input class="form-check-input me-1" type="checkbox" value="" aria-label="...">
+        {{ d.description }} <input type="button" class = 'button' name="cross" value="x">
+        </li>
+        {% endfor %}
+      </ul>
+    </div>
+
+
+    <script>
+      document.getElementById('form').onsubmit = function(e){
+        document.getElementById('inputtodo').innerText = '';
+        e.preventDefault();
+        fetch('/todos/create',{
+          method: 'POST',
+          body: JSON.stringify({
+            'description': document.getElementById('inputtodo').value
+          }),
+          headers: {
+            'Content-Type': 'application/json'
+          }
+        })
+        .then(response => response.json())
+        .then(jsonResponse=> {
+          console.log(jsonResponse);
+          const liItem = document.createElement('li');
+          liItem.className = "list-group-item";
+          const checkbox = document.createElement('input');
+          checkbox.className = "form-check-input me-1";
+          checkbox.type = 'checkbox';
+          liItem.appendChild(checkbox);
+
+          //liItem.innerHTML = jsonResponse['description'];
+          const space = document.createTextNode(' ')
+          liItem.appendChild(space)
+          const text = document.createTextNode(jsonResponse['description']);
+          liItem.appendChild(text);
+
+          const cross = document.createElement('button');
+          cross.className =  'button';
+          cross.type = 'button'
+          cross.innerHTML = 'x'
+          cross.style = "float:right"
+          liItem.appendChild(cross);
+          document.getElementById('todos').appendChild(liItem);
+          document.getElementById("todos").style.listStyle = "none";
+          document.getElementById('error').className = 'hidden';
+        })
+        .catch(error => {
+          console.error('Error',error)
+          document.getElementById('error').className = '';
+        })
+      }
+    </script>
+
+
+
+  </body>
+</html>
