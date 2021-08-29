@@ -26,6 +26,10 @@
           color: black;
           text-decoration: none; /* no underline */
             }
+
+      .hidden{
+        display: none;
+      }
     /* #mainlist{
       padding-right: 10px;
     } */
@@ -135,7 +139,6 @@
   // # -------------------------Completed tasks updated in the database ------------------------------- #
       const checkboxes = document.querySelectorAll('.form-check-input');
       for (let i=0; i< checkboxes.length;i++){
-        console.log('Here')
         const checkbox = checkboxes[i];
         checkbox.onchange=function(e){
           const newCompleted = e.target.checked;

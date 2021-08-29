@@ -16,7 +16,7 @@ class Todo(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     description = db.Column(db.String(),nullable=False)
     completed = db.Column(db.Boolean,nullable=False,default=False)
-    list_id = db.Column(db.Integer,db.ForeignKey('todolists.id',ondelete='CASCADE'),nullable=False)
+    list_id = db.Column(db.Integer,db.ForeignKey('todolists.id',ondelete="cascade"),nullable=False)
 
     def __repr__(self):
         return f'<Todo {self.id} {self.description}>'
@@ -25,7 +25,7 @@ class TodoList(db.Model):
     __tablename__ = 'todolists'
     id = db.Column(db.Integer,primary_key=True)
     name = db.Column(db.String(),nullable=False)
-    todos=db.relationship('Todo',backref='list',passive_deletes='all',lazy=True)
+    todos=db.relationship('Todo',backref='list',cascade="all,delete-orphan",lazy=True)
 
 # ---------------------------- Create a new item in the todo table ------------------------------- #
 @app.route('/todos/create',methods=["POST"])
@@ -99,6 +99,7 @@ def check_completed(todoId):
 @app.route('/todos/<todoId>/list-completed', methods=['POST'])
 def list_completed(todoId):
     try:
+        print("List_completed")
         completed = request.get_json()['completed']
         Todo.query.filter_by(list_id=todoId).delete()
         db.session.commit()
@@ -115,8 +116,8 @@ def list_completed(todoId):
 # ----------------------------Close completed items ------------------------------- #
 @app.route('/todos/<tocloseId>/close', methods=['DELETE'])
 def close_todo(tocloseId):
+    print(tocloseId)
     try:
-        print(tocloseId)
         Todo.query.filter_by(id=tocloseId).delete()
         db.session.commit()
 
@@ -131,6 +132,7 @@ def close_todo(tocloseId):
 # ----------------------------Close todolist ------------------------------- #
 @app.route('/todos/<closelistId>/closelist', methods=['DELETE'])
 def close_list(closelistId):
+    print("close_list")
     try:
         TodoList.query.filter_by(id=closelistId).delete()
         db.session.commit()
