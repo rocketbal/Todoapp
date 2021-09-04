@@ -162,7 +162,7 @@
       }
 
       // # -------------------------Add new items to the todolist ------------------------------- #
-      // # -------------------------Update the list asynchronously------------------------------- #
+      // # -------------------------Update the list synchronously------------------------------- #
         document.getElementById('form').onsubmit = function(e){
           document.getElementById('inputtodo').innerText = '';
           e.preventDefault();
@@ -220,7 +220,7 @@
 
 
 // # -------------------------Add a new todolist ------------------------------- #
-// # -------------------------Update the list asynchronously------------------------------- #
+// # -------------------------Update the list synchronously------------------------------- #
     document.getElementById('todolistform').onsubmit = function(e){
     document.getElementById('inputtodolist').innerText = '';
     e.preventDefault();
