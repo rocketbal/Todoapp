@@ -12,7 +12,7 @@ if ENV== 'dev':
     app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql://postgres:password@localhost:5432/todoapp_prod'
 else:
     app.debug = False
-    app.config['SQLALCHEMY_DATABASE_URI'] = 'postgres://czfxkzwrrcfeno:6cd411b700607711f8c32c67ff58245f432bfd80544867add95873cb15a6310e@ec2-18-235-45-217.compute-1.amazonaws.com:5432/d2c0o334uis9b1'
+    app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql://czfxkzwrrcfeno:6cd411b700607711f8c32c67ff58245f432bfd80544867add95873cb15a6310e@ec2-18-235-45-217.compute-1.amazonaws.com:5432/d2c0o334uis9b1'
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS']=False
 db = SQLAlchemy(app)
 migrate = Migrate(app,db)
